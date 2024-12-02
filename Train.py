@@ -32,20 +32,22 @@ model_config = { "Model": 'MLP',
                  "Epochs": 500,
                  "Batch Size": 50,
                  "Optimizer": 'Adam',
-                 "Learning Rate": 5e-2,
+                 "Learning Rate": 5e-3,
                  "Scheduler Step": 50,
                  "Scheduler Gamma": 0.5,
                  "Activation": 'Tanh',
                  "Normalisation Strategy": 'Min-Max. Variable',
                  "Layers": 4,
-                 "Neurons": 128,
+                 "Neurons": 256,
                  "Loss Function": 'MSE',
                  }
 
 
 #Cases - residential_building, sgemm, community_crime
 # case = 'sgemm'
-case = 'crimes_and_community'
+# case = 'crimes_and_community'
+case = 'bias_correction'
+
 case_config, inputs, outputs = load_data(case)
 
 #Setting the configuration

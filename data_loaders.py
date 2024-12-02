@@ -151,6 +151,23 @@ def crimes_and_community():
     
     return case_config, X, y
 
+def bias_correction():
+    df = pd.read_csv(data_loc + '/Bias_correction_ucl.csv')
+    df, _ = filter_matching_nans(df, df)
+    df = df.drop(columns='Date')
+
+    inputs = df.iloc[:, 0:22].to_numpy()
+    outputs = df.iloc[:, 22:].to_numpy()
+
+    inputs, outputs = torch.tensor(inputs, dtype=torch.float32), torch.tensor(outputs, dtype=torch.float32)
+    
+    case_config = {"Case": 'bias_correction',
+                   "in_dims": inputs.shape[1], 
+                   "out_dims": outputs.shape[1]
+                    }
+    
+    return case_config, inputs, outputs
+
 
 def load_data(case):
 
@@ -158,8 +175,8 @@ def load_data(case):
         return sgemm()
     if case == 'crimes_and_community':
         return crimes_and_community()
-    
-    
+    if case == 'bias_correction':
+        return bias_correction()
 # %% 
 
   
