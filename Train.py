@@ -147,5 +147,5 @@ torch.save(model.state_dict(), saved_model)
 # mse_loss = (out_test - model(in_test)).pow(2).mean()
 mse_loss = (out_normalizer.decode(out_test) - out_normalizer.decode(model(in_test))).pow(2).mean()
 print(f'MSE: {mse_loss}')
-np.savez(case, targs=out_test, preds=model(in_test).detach())
+np.savez(os.getcwd() + '/Preds/' + case, targs=out_test, preds=model(in_test).detach())
 # %%
