@@ -43,10 +43,21 @@ model_config = { "Model": 'MLP',
                  }
 
 
-#Cases - residential_building, sgemm, community_crime
+
+
+# Case                              |  Targets 
+# Music Origin                      |  2
+# Indoor Localisation               |  2
+# Bias Correction                   |  2
+# SGEMM                             |  4
+# Crimes and Community              |  18      
+
+
+# case = 'bias_correction'
 # case = 'sgemm'
 # case = 'crimes_and_community'
-case = 'bias_correction'
+# case = 'music_origin'
+case = 'indoor_localisation'
 
 case_config, inputs, outputs = load_data(case)
 
@@ -144,8 +155,8 @@ torch.save(model.state_dict(), saved_model)
 
 # %%  
 #Validation 
-# mse_loss = (out_test - model(in_test)).pow(2).mean()
-mse_loss = (out_normalizer.decode(out_test) - out_normalizer.decode(model(in_test))).pow(2).mean()
+mse_loss = (out_test - model(in_test)).pow(2).mean()
+# mse_loss = (out_normalizer.decode(out_test) - out_normalizer.decode(model(in_test))).pow(2).mean()
 print(f'MSE: {mse_loss}')
 np.savez(os.getcwd() + '/Preds/' + case, targs=out_test, preds=model(in_test).detach())
 # %%

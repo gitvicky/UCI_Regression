@@ -5,9 +5,10 @@ import torch
 import os 
 from ucimlrepo import fetch_ucirepo 
 
-# %%
 #Loading Data 
 data_loc = os.getcwd() + '/Data'
+
+# %%
 
 import pandas as pd
 import numpy as np
@@ -169,6 +170,46 @@ def bias_correction():
     return case_config, inputs, outputs
 
 
+def music_origin():
+    df = pd.read_csv(data_loc + '/default_features_1059_tracks.txt', header=None)
+
+    inputs = df.iloc[:, 0:68].to_numpy()
+    outputs = df.iloc[:, 68:].to_numpy()
+
+    inputs, outputs = torch.tensor(inputs, dtype=torch.float32), torch.tensor(outputs, dtype=torch.float32)
+
+        
+    case_config = {"Case": 'bias_correction',
+                   "in_dims": inputs.shape[1], 
+                   "out_dims": outputs.shape[1]
+                    }
+    
+    return case_config, inputs, outputs
+
+def indoor_localisation():
+    df1 = pd.read_csv(data_loc + '/indoorloc_trainingData.csv')
+    df2 = pd.read_csv(data_loc + '/indoorloc_validationData.csv')
+
+    df = pd.concat(
+            [df1, df2],
+            axis=0,  # 0 for row-wise concatenation
+            ignore_index=True
+        )
+    
+
+    inputs = df.iloc[:, 0:520].to_numpy()
+    outputs = df.iloc[:, 520:522].to_numpy()
+
+    inputs, outputs = torch.tensor(inputs, dtype=torch.float32), torch.tensor(outputs, dtype=torch.float32)
+
+        
+    case_config = {"Case": 'bias_correction',
+                   "in_dims": inputs.shape[1], 
+                   "out_dims": outputs.shape[1]
+                    }
+    
+    return case_config, inputs, outputs
+
 def load_data(case):
 
     if case == 'sgemm':
@@ -177,6 +218,11 @@ def load_data(case):
         return crimes_and_community()
     if case == 'bias_correction':
         return bias_correction()
+    if case == 'music_origin':
+        return music_origin()
+    if case == 'indoor_localisation':
+        return indoor_localisation()
+    
 # %% 
 
   
